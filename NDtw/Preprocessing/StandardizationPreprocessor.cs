@@ -12,10 +12,33 @@ namespace NDtw.Preprocessing
             //http://mathworld.wolfram.com/StandardDeviation.html
 
             // x = (x - mean) / std dev
-            var mean = data.Average();
-            var stdDev = Math.Sqrt(data.Select(x => x - mean).Sum(x => x * x) / (data.Length - 1));
+            var sum = 0.0;
+            int length = data.Length;
 
-            return data.Select(x => (x - mean) / stdDev).ToArray();
+            for (var i = 0; i < length; i++)
+            {
+                sum += data[i];
+            }
+
+            double mean = sum / length;
+
+            sum = 0.0;
+            for (var i = 0; i < length; i++)
+            {
+                double value = data[i] - mean;
+                sum += value * value;
+            }
+
+            double stdDev = Math.Sqrt(sum / (length - 1));
+
+            var result = new double[length];
+
+            for (var i = 0; i < length; i++)
+            {
+                result[i] = (data[i] - mean) / stdDev;
+            }
+
+            return result;
         }
 
         public override string ToString()

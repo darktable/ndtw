@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NDtw.Preprocessing;
 
 namespace NDtw
@@ -46,7 +43,9 @@ namespace NDtw
         public double[] GetPreprocessedXSeries()
         {
             if (_preprocessor == null)
+            {
                 return _x;
+            }
 
             return _preprocessor.Preprocess(_x);
         }
@@ -54,9 +53,16 @@ namespace NDtw
         public double[] GetPreprocessedYSeries()
         {
             if (_preprocessor == null)
+            {
                 return _y;
+            }
 
             return _preprocessor.Preprocess(_y);
+        }
+
+        public static double Distance(double x, double y)
+        {
+            return Math.Abs(x - y);
         }
     }
 }

@@ -1,5 +1,6 @@
-﻿using System.Linq;
+﻿// using System.Linq;
 
+using System;
 namespace NDtw.Preprocessing
 {
     public class NormalizationPreprocessor : IPreprocessor
@@ -25,11 +26,27 @@ namespace NDtw.Preprocessing
         {
             // x = ((x - min_x) / (max_x - min_x)) * (maxBoundary - minBoundary) + minBoundary
 
-            var min = data.Min();
-            var max = data.Max();
-            var constFactor = (_maxBoundary - _minBoundary)/(max - min);
+            int length = data.Length;
 
-            return data.Select(x => (x - min) * constFactor + _minBoundary).ToArray();
+            var min = double.MaxValue;
+            var max = double.MinValue;
+
+            for (var i = 0; i < length; i++)
+            {
+                min = Math.Min(min, data[i]);
+                max = Math.Max(max, data[i]);
+            }
+
+            double constFactor = (_maxBoundary - _minBoundary)/(max - min);
+
+            var result = new double[length];
+
+            for (var i = 0; i < length; i++)
+            {
+                result[i] = (data[i] - min) * constFactor + _minBoundary;
+            }
+
+            return result;
         }
 
         public override string ToString()
